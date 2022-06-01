@@ -1,3 +1,11 @@
+<script>
+import GuestLayout from "@/Layouts/Guest.vue";
+
+export default {
+    layout: GuestLayout,
+};
+</script>
+
 <script setup>
 import BreezeButton from "@/Components/Button.vue";
 import BreezeGuestLayout from "@/Layouts/Guest.vue";
@@ -22,47 +30,45 @@ const submit = () => {
 </script>
 
 <template>
-    <BreezeGuestLayout>
-        <Head title="Register"/>
+    <Head title="Register"/>
 
-        <div class="mt-32 px-5 max-w-lg mx-auto">
-            <p class="text-5xl mb-5">Register</p>
+    <div class="mt-32 px-5 max-w-lg mx-auto">
+        <p class="text-5xl mb-5">Register</p>
 
-            <BreezeValidationErrors class="mb-4"/>
+        <BreezeValidationErrors class="mb-4"/>
 
-            <form @submit.prevent="submit">
-                <div>
-                    <BreezeLabel for="name" value="Name"/>
-                    <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name"/>
-                </div>
+        <form @submit.prevent="submit">
+            <div>
+                <BreezeLabel for="name" value="Name"/>
+                <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name"/>
+            </div>
 
-                <div class="mt-4">
-                    <BreezeLabel for="email" value="Email"/>
-                    <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username"/>
-                </div>
+            <div class="mt-4">
+                <BreezeLabel for="email" value="Email"/>
+                <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username"/>
+            </div>
 
-                <div class="mt-4">
-                    <BreezeLabel for="password" value="Password"/>
-                    <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password"/>
-                </div>
+            <div class="mt-4">
+                <BreezeLabel for="password" value="Password"/>
+                <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password"/>
+            </div>
 
-                <div class="mt-4">
-                    <BreezeLabel for="password_confirmation" value="Confirm Password"/>
-                    <BreezeInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password"/>
-                </div>
+            <div class="mt-4">
+                <BreezeLabel for="password_confirmation" value="Confirm Password"/>
+                <BreezeInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password"/>
+            </div>
 
-                <div class="flex items-center justify-end gap-4 mt-4">
-                    <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                        Already registered?
-                    </Link>
+            <div class="flex items-center justify-end gap-4 mt-4">
+                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                    Already registered?
+                </Link>
 
-                    <BreezeButton
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-fit px-5 py-2.5 text-center"
-                        :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Register
-                    </BreezeButton>
-                </div>
-            </form>
-        </div>
-    </BreezeGuestLayout>
+                <BreezeButton
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-fit px-5 py-2.5 text-center"
+                    :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Register
+                </BreezeButton>
+            </div>
+        </form>
+    </div>
 </template>

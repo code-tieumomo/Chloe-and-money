@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,8 +28,7 @@ Route::get('/', function() {
     ]);
 })->name('home');
 
-Route::get('/dashboard', function() {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/transaction', [TransactionController::class, 'store'])->middleware(['auth', 'verified'])->name('transaction.store');
 
 require __DIR__ . '/auth.php';
