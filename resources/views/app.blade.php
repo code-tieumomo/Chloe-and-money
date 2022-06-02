@@ -20,7 +20,7 @@
     @inertiaHead
 
     <!-- PWA  -->
-    <meta name="theme-color" content="#6777ef"/>
+    <meta name="theme-color" content="#4dcfe0"/>
     <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
 </head>

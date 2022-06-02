@@ -1,18 +1,43 @@
 {
-    "short_name": "cờ lâu i and money",
-    "name": "cờ lâu i and money",
+    "background_color": "#ffffff",
+    "categories": [
+        "finance",
+        "money",
+        "management"
+    ],
+    "description": "Ever dream of having a nice trip to Paris with your love, new flagship smartphone, new car, travel around the world or maybe your retirement plan? Let's make it happen with our cờ lâu i and money tracker app.",
+    "display": "standalone",
     "icons": [
         {
             "src": "images/logo.png",
-            "type": "image/png",
-            "sizes": "512x512"
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "purpose": "maskable",
+            "src": "images/logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
         }
     ],
-    "start_url": "/?source=pwa",
-    "background_color": "#ffffff",
-    "display": "standalone",
-    "scope": "/",
-    "theme_color": "#4dcfe0",
+    "name": "Chloe And Money",
+    "screenshots": [
+        {
+            "src": "/images/screenshots/Welcome.png",
+            "sizes": "375x759",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/screenshots/Login.png",
+            "sizes": "375x759",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/screenshots/Dashboard.png",
+            "sizes": "375x759",
+            "type": "image/png"
+        }
+    ],
     "shortcuts": [
         {
             "name": "Get started",
@@ -51,22 +76,9 @@
             ]
         }
     ],
-    "description": "Ever dream of having a nice trip to Paris with your love, new flagship smartphone, new car, travel around the world or maybe your retirement plan? Let's make it happen with our cờ lâu i and money tracker app.",
-    "screenshots": [
-        {
-            "src": "/images/screenshots/Welcome.png",
-            "type": "image/png",
-            "sizes": "375x759"
-        },
-        {
-            "src": "/images/screenshots/Login.png",
-            "type": "image/png",
-            "sizes": "375x759"
-        },
-        {
-            "src": "/images/screenshots/Dashboard.png",
-            "type": "image/png",
-            "sizes": "375x759"
-        }
-    ]
+    "short_name": "Chloey",
+    "start_url": "/?source=pwa",
+    "theme_color": "#4dcfe0",
+    "scope": "/",
+    "android_package_name": "com.chloey.android"
 }
