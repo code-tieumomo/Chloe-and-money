@@ -78,7 +78,7 @@
     ],
     "short_name": "Chloey",
     "start_url": "/?source=pwa",
-    "theme_color": "#4dcfe0",
+    "theme_color": "#ffffff",
     "scope": "/",
     "android_package_name": "com.chloey.android"
 }
