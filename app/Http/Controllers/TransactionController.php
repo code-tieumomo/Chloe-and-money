@@ -16,7 +16,7 @@ class TransactionController extends Controller
         switch ($request->type) {
             case "spending":
                 $transaction = SpendingMoney::create([
-                    'amount' => $request->amount,
+                    'amount' => $request->rawAmount,
                     'user_id' => Auth::user()->id,
                     'description' => $request->description,
                 ]);
@@ -24,7 +24,7 @@ class TransactionController extends Controller
 
             case "saving":
                 $transaction = SavingMoney::create([
-                    'amount' => $request->amount,
+                    'amount' => $request->rawAmount,
                     'user_id' => Auth::user()->id,
                 ]);
                 break;

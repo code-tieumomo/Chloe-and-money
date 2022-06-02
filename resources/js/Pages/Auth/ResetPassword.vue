@@ -36,7 +36,7 @@ const submit = () => {
 <template>
     <Head title="Reset Password"/>
 
-    <div class="mt-32 px-5 max-w-lg mx-auto">
+    <div class="h-full flex flex-col justify-center px-5 max-w-lg mx-auto">
         <p class="text-5xl mb-5">Reset password</p>
 
         <BreezeValidationErrors class="mb-4"/>

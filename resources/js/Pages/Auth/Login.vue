@@ -37,8 +37,15 @@ const submit = () => {
 <template>
     <Head title="Log in"/>
 
-    <div class="mt-32 px-5 max-w-lg mx-auto">
+    <div class="px-5 max-w-lg mx-auto h-full flex flex-col justify-center">
         <p class="text-5xl mb-5">Login</p>
+
+        <span class="bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-2.5 py-0.5 rounded w-fit mb-5">
+            Doesn't have account, let&nbsp;
+            <Link :href="route('register')" class="inline-flex text-[#4dcfe0] mr-1">
+                Register
+            </Link>
+        </span>
 
         <BreezeValidationErrors class="mb-4"/>
 

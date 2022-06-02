@@ -43,6 +43,23 @@ const form = useForm({
     type: "spending",
     description: "",
 });
+
+function formatAmount() {
+    let nf = new Intl.NumberFormat("en-US");
+    form.amount = nf.format(Number(form.amount.replaceAll(",", "")));
+}
+
+function storeTransaction() {
+    form
+        .transform((data) => ({
+            ...data,
+            rawAmount: Number(data.amount.replaceAll(",", "")),
+        }))
+        .post("/transaction", {
+            preserveScroll: true,
+            onSuccess: () => form.reset("amount") && form.reset("description"),
+        });
+}
 </script>
 
 <template>
@@ -109,16 +126,14 @@ const form = useForm({
                             </button>
                             <div class="py-6 px-6 lg:px-8">
                                 <h3 class="mb-4 text-xl font-medium text-gray-900">Add new transaction</h3>
-                                <form class="space-y-6" @submit.prevent="form.post('/transaction', {
-                                        preserveScroll: true,
-                                        onSuccess: () => form.reset('amount') && form.reset('description'),
-                                    })">
+                                <form class="space-y-6" @submit.prevent="storeTransaction">
                                     <div>
                                         <label for="amount" class="block mb-2 text-sm font-medium text-gray-900">Amount</label>
                                         <input ref="input"
-                                               type="number" name="amount" id="amount"
+                                               type="text" name="amount" id="amount"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                               placeholder="Amount" min="0" required v-model="form.amount">
+                                               placeholder="Amount" min="0" required v-model="form.amount"
+                                               @input="formatAmount">
                                     </div>
                                     <div>
                                         <label for="type" class="block mb-2 text-sm font-medium text-gray-900">Transaction type</label>

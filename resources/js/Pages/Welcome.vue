@@ -21,8 +21,8 @@ defineProps({
 <template>
     <Head title="Welcome"/>
 
-    <div class="flex align-center justify-between pt-32">
-        <div class="w-full sm:w-3/6 flex flex-col gap-1">
+    <div class="flex align-center h-full flex-col sm:flex-row justify-center px-2">
+        <div class="w-full sm:w-3/6 flex flex-col gap-1 my-auto">
             <span v-if="!isLogin" class="bg-gray-100 text-gray-800 text-md font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 w-fit">
                 <Link :href="route('login')" class="inline-flex text-[#4dcfe0] mr-1">
                     Login
@@ -31,7 +31,9 @@ defineProps({
             </span>
             <h1 class="text-7xl font-bold mt-2 text-gray-700">cờ lâu i and money</h1>
             <p class="pr-4 text-sm text-gray-700 mt-5">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias culpa ducimus esse et, laudantium, magnam nam neque quaerat quod quos sit velit voluptatem? Aliquam debitis eum id labore non! Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Ever dream of having a nice trip to Paris with your love, new flagship smartphone, new car, travel around the world or maybe your retirement plan? Let's make it happen with our Cờ lâu i and money tracker app.
+                <br>
+                With 'Cờ lâu i and money' it's super easy to plan and manage your savings, just create your goal and track every time you save money with this simple but powerful app.
             </p>
             <Link :href="route('dashboard')"
                   as="button"

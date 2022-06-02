@@ -32,8 +32,15 @@ const submit = () => {
 <template>
     <Head title="Register"/>
 
-    <div class="mt-32 px-5 max-w-lg mx-auto">
+    <div class="h-full flex flex-col justify-center px-5 max-w-lg mx-auto">
         <p class="text-5xl mb-5">Register</p>
+
+        <span class="bg-gray-100 text-gray-800 text-sm font-medium inline-flex items-center px-2.5 py-0.5 rounded w-fit mb-5">
+            Already registered? Let&nbsp;
+            <Link :href="route('login')" class="inline-flex text-[#4dcfe0] mr-1">
+                Login
+            </Link>
+        </span>
 
         <BreezeValidationErrors class="mb-4"/>
 
@@ -59,10 +66,6 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end gap-4 mt-4">
-                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Already registered?
-                </Link>
-
                 <BreezeButton
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-fit px-5 py-2.5 text-center"
                     :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
