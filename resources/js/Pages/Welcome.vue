@@ -31,9 +31,9 @@ defineProps({
             </span>
             <h1 class="text-7xl font-bold mt-2 text-gray-700">cờ lâu i and money</h1>
             <p class="pr-4 text-sm text-gray-700 mt-5">
-                Ever dream of having a nice trip to Paris with your love, new flagship smartphone, new car, travel around the world or maybe your retirement plan? Let's make it happen with our Cờ lâu i and money tracker app.
+                Ever dream of having a nice trip to Paris with your love, new flagship smartphone, new car, travel around the world or maybe your retirement plan? Let's make it happen with our cờ lâu i and money tracker app.
                 <br>
-                With 'Cờ lâu i and money' it's super easy to plan and manage your savings, just create your goal and track every time you save money with this simple but powerful app.
+                With 'cờ lâu i and money' it's super easy to plan and manage your savings, just create your goal and track every time you save money with this simple but powerful app.
             </p>
             <Link :href="route('dashboard')"
                   as="button"

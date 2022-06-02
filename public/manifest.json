@@ -1,0 +1,72 @@
+{
+    "short_name": "cờ lâu i and money",
+    "name": "cờ lâu i and money",
+    "icons": [
+        {
+            "src": "images/logo.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/?source=pwa",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#4dcfe0",
+    "shortcuts": [
+        {
+            "name": "Get started",
+            "short_name": "Get started",
+            "description": "Get started",
+            "url": "/?source=pwa",
+            "icons": [
+                {
+                    "src": "images/logo.png",
+                    "sizes": "512x512"
+                }
+            ]
+        },
+        {
+            "name": "Login",
+            "short_name": "Login",
+            "description": "Login",
+            "url": "/login?source=pwa",
+            "icons": [
+                {
+                    "src": "images/logo.png",
+                    "sizes": "512x512"
+                }
+            ]
+        },
+        {
+            "name": "Dashboard",
+            "short_name": "Dashboard",
+            "description": "Dashboard",
+            "url": "/dashboard?source=pwa",
+            "icons": [
+                {
+                    "src": "images/logo.png",
+                    "sizes": "512x512"
+                }
+            ]
+        }
+    ],
+    "description": "Weather forecast information",
+    "screenshots": [
+        {
+            "src": "/images/screenshots/Welcome.png",
+            "type": "image/png",
+            "sizes": "375x759"
+        },
+        {
+            "src": "/images/screenshots/Login.png",
+            "type": "image/png",
+            "sizes": "375x759"
+        },
+        {
+            "src": "/images/screenshots/Dashboard.png",
+            "type": "image/png",
+            "sizes": "375x759"
+        }
+    ]
+}
