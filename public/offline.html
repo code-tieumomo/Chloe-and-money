@@ -7,61 +7,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        .error_body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            height: 100vh;
-            width: 100%;
-            background: #f9f9f9;
+        @import url('https://fonts.googleapis.com/css?family=Fira+Mono:400');
+
+        body{
+          display: flex;
+          width: 100vw;
+          height: 100vh;
+          align-items: center;
+          justify-content: center;
+          margin: 0;
+          background: #131313;
+          color: #fff;
+          font-size: 96px;
+          font-family: 'Fira Mono', monospace;
+          letter-spacing: -7px;
         }
 
-        .error_container .error_heading {
-            color: transparent;
-            font-size: 160px;
-            margin: 0;
-            font-weight: 900;
-            letter-spacing: 20px;
-            background-size: 100% 100%;
-            background: linear-gradient(90deg, #6b719b 38%, #9da3cc 53%, #979dce 65%);
-            -webkit-background-clip: text;
-            -moz-background-clip: text;
-            -ms-background-clip: text;
+        div{
+          animation: glitch 1s linear infinite;
         }
 
-        @media (max-width: 540px) {
-            .error_container .error_heading {
-                font-size: 120px;
-                letter-spacing: 10px;
-            }
+        @keyframes glitch{
+          2%,64%{
+            transform: translate(2px,0) skew(0deg);
+          }
+          4%,60%{
+            transform: translate(-2px,0) skew(0deg);
+          }
+          62%{
+            transform: translate(0,0) skew(5deg);
+          }
         }
 
-        .error_container .error_btn {
-            background-color: #6e749e !important;
-            border: none;
-            outline: none;
+        div:before,
+        div:after{
+          content: attr(title);
+          position: absolute;
+          left: 0;
         }
 
-        .error_container .error_btn:focus {
-            box-shadow: none !important;
+        div:before{
+          animation: glitchTop 1s linear infinite;
+          clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+          -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
         }
 
-        .error_container .error_message,
-        .error_container .error_paragraph {
-            color: #787878;
+        @keyframes glitchTop{
+          2%,64%{
+            transform: translate(2px,-2px);
+          }
+          4%,60%{
+            transform: translate(-2px,2px);
+          }
+          62%{
+            transform: translate(13px,-1px) skew(-13deg);
+          }
+        }
+
+        div:after{
+          animation: glitchBotom 1.5s linear infinite;
+          clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+          -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitchBotom{
+          2%,64%{
+            transform: translate(-2px,0);
+          }
+          4%,60%{
+            transform: translate(-2px,0);
+          }
+          62%{
+            transform: translate(-22px,5px) skew(21deg);
+          }
         }
     </style>
 </head>
 <body>
-<div class="error_body">
-    <div
-        class="container error_container d-flex justify-content-center align-items-center flex-column w-100 h-100 p-5 text-center">
-        <h2 class="error_message text-center mb-3">Boo! You don't have an internet connection</h2>
-        <p class="error_paragraph text-center mb-5">
-            Please check your network connection and try again.
-        </p>
-        <a href="/" class="btn btn-primary error_btn">Back to Home Page</a>
-    </div>
-</div>
+<div title="404">404</div>
 </body>
 </html>
