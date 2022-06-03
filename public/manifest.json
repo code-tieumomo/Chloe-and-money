@@ -32,12 +32,12 @@
             "type": "image/png"
         },
         {
-            "src": "/images/screenshots/Welcome.png",
-            "sizes": "373x763",
+            "src": "/images/screenshots/Dashboard.png",
+            "sizes": "375x759",
             "type": "image/png"
         },
         {
-            "src": "/images/screenshots/Dashboard.png",
+            "src": "/images/screenshots/Welcome.png",
             "sizes": "375x759",
             "type": "image/png"
         }
