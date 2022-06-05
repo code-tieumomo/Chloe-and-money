@@ -30,6 +30,7 @@ class TransactionController extends Controller
                 break;
         }
 
-        return Redirect::route('dashboard');
+//        return Redirect::route('dashboard');
+        return \redirect()->back();
     }
 }

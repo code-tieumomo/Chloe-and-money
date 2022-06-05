@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -36,6 +37,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        $groups = Group::with('subGroups')->get();
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => [
@@ -47,6 +50,7 @@ class HandleInertiaRequests extends Middleware
             'ziggy' => function() {
                 return (new Ziggy)->toArray();
             },
+            'groups' => $groups,
         ]);
     }
 }
