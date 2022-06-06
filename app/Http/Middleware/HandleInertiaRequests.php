@@ -38,6 +38,13 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
         $groups = Group::with('subGroups')->get();
+        $groups = $groups->map(fn($group) => [
+            'name' => $group->name,
+            'subGroups' => $group->subGroups->map(fn($subGroup) => [
+                'id' => $subGroup->id,
+                'name' => $subGroup->name,
+            ]),
+        ]);
 
         return array_merge(parent::share($request), [
             'auth' => [

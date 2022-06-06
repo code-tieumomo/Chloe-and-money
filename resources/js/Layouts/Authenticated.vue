@@ -6,19 +6,9 @@ import BreezeDropdownLink from "@/Components/DropdownLink.vue";
 import BreezeNavLink from "@/Components/NavLink.vue";
 import BreezeResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import {Link, useForm, usePage} from "@inertiajs/inertia-vue3";
-import Popper from "vue3-popper";
+import moment from "moment";
 
 const showingNavigationDropdown = ref(false);
-
-/**
- * Budget
- */
-const currentBudget = ref(10000000);
-const isShowBudget = ref(false);
-
-function toggleShowBudget() {
-    isShowBudget.value = !isShowBudget.value;
-}
 
 /**
  * Transaction modal
@@ -45,7 +35,7 @@ const form = useForm({
     type: "spending",
     group_id: 1,
     description: "",
-    date: new Date(),
+    date: moment(new Date()).format("yyyy-MM-DD"),
 });
 
 function formatAmount() {
@@ -54,13 +44,13 @@ function formatAmount() {
 }
 
 function storeTransaction() {
-    form.transform((data) => ({
-        ...data,
-        rawAmount: Number(data.amount.replaceAll(",", "")),
-    })).post("/transaction", {
-        preserveScroll: true,
-        onSuccess: () => form.reset("amount") && form.reset("description"),
-    });
+    // form.transform((data) => ({
+    //     ...data,
+    //     rawAmount: Number(data.amount.replaceAll(",", "")),
+    // })).post("/transaction", {
+    //     preserveScroll: true,
+    //     onSuccess: () => form.reset("amount") && form.reset("description"),
+    // });
 }
 
 const groups = usePage().props.value.groups;
@@ -76,82 +66,12 @@ const groups = usePage().props.value.groups;
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('dashboard')" class="flex items-center">
                                     <BreezeApplicationLogo
                                         class="block h-6 w-auto"
                                     />
+                                    <span class="ml-2 font-semibold text-gray-600 text-cyan-500">cờ lâu i and money</span>
                                 </Link>
-                                <div class="flex flex-col ml-4">
-                                    <div class="flex items-center h-6">
-                                        <div
-                                            class="font-semibold text-xl text-gray-600"
-                                            v-text="
-                                                isShowBudget
-                                                    ? currentBudget.toLocaleString()
-                                                    : '************'
-                                            "
-                                        ></div>
-                                        <svg
-                                            v-if="!isShowBudget"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4 text-gray-500 ml-2 cursor-pointer"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            @click="toggleShowBudget"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                            />
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                            />
-                                        </svg>
-                                        <svg
-                                            v-if="isShowBudget"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4 text-gray-500 ml-2 cursor-pointer"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            @click="toggleShowBudget"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div
-                                        class="flex items-center text-xs text-gray-400"
-                                    >
-                                        <Popper hover offsetDistance="10" arrow offsetSkid="40" class="w-fit">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="16"
-                                                height="16"
-                                                fill="currentColor"
-                                                class="mr-1 w-3 h-3"
-                                                viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247zm2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"
-                                                />
-                                            </svg>
-                                            <template #content>
-                                                <div>Calculated by all your budgets</div>
-                                            </template>
-                                        </Popper>
-                                        Your current budget
-                                    </div>
-                                </div>
                             </div>
 
                             <!-- Navigation Links -->
@@ -319,14 +239,15 @@ const groups = usePage().props.value.groups;
             <!--Page Footer-->
             <div class="fixed bottom-0 left-0 right-0 h-16 bg-white shadow">
                 <nav class="h-full flex items-center justify-around">
-                    <Link :class="{ 'text-[#4dcfe0]': $page.url === '/dashboard' }" :href="route('dashboard')" class="text-center text-gray-500 w-fit">
+                    <Link :class="{ 'text-[#4dcfe0]': $page.url === '/dashboard' }" :href="route('dashboard')"
+                          class="text-center text-gray-500 w-fit text-xs flex flex-col items-center">
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 16 16">
                             <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"
                                   fill-rule="evenodd"/>
                             <path d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" fill-rule="evenodd"/>
                         </svg>
                     </Link>
-                    <Link :href="route('dashboard')" class="text-center text-gray-500 w-fit">
+                    <Link :href="route('dashboard')" class="text-center text-gray-500 w-fit text-xs flex flex-col items-center">
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 16 16">
                             <path
                                 d="M1.5 2A1.5 1.5 0 0 0 0 3.5v2h6a.5.5 0 0 1 .5.5c0 .253.08.644.306.958.207.288.557.542 1.194.542.637 0 .987-.254 1.194-.542.226-.314.306-.705.306-.958a.5.5 0 0 1 .5-.5h6v-2A1.5 1.5 0 0 0 14.5 2h-13z"/>
@@ -339,7 +260,7 @@ const groups = usePage().props.value.groups;
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                         </svg>
                     </span>
-                    <Link :href="route('dashboard')" class="text-center text-gray-500 w-fit">
+                    <Link :href="route('dashboard')" class="text-center text-gray-500 w-fit text-xs flex flex-col items-center">
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 16 16">
                             <path
                                 d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
@@ -347,7 +268,7 @@ const groups = usePage().props.value.groups;
                                 d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1ZM10 8a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V8Zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"/>
                         </svg>
                     </Link>
-                    <Link :href="route('dashboard')" class="text-center text-gray-500 w-fit">
+                    <Link :href="route('dashboard')" class="text-center text-gray-500 w-fit text-xs flex flex-col items-center">
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 16 16">
                             <path
                                 d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
@@ -447,7 +368,7 @@ const groups = usePage().props.value.groups;
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                             >
                                                 <optgroup v-for="group in groups" :key="group.id" :label="group.name">
-                                                    <option v-for="subGroup in group.sub_groups" :key="subGroup.id" :value="subGroup.id">
+                                                    <option v-for="subGroup in group.subGroups" :key="subGroup.id" :value="subGroup.id">
                                                         {{ subGroup.name }}
                                                     </option>
                                                 </optgroup>
@@ -500,15 +421,6 @@ const groups = usePage().props.value.groups;
 </template>
 
 <style scoped>
-:root {
-    --popper-theme-background-color: #333333;
-    --popper-theme-background-color-hover: #333333;
-    --popper-theme-text-color: #ffffff;
-    --popper-theme-border-radius: 4px;
-    --popper-theme-padding: 0.5rem;
-    --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
-}
-
 /* we will explain what these classes do next! */
 .v-enter-active,
 .v-leave-active {

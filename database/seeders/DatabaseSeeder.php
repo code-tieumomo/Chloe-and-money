@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +16,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10)->create();
+        $users = User::factory(10)->create();
+        foreach ($users as $user) {
+            Wallet::create([
+                'user_id' => $user->id,
+                'name' => 'Your default wallet',
+                'currency' => 'VND',
+                'amount' => 0,
+            ]);
+        }
 
         $this->call(GroupSeeder::class);
     }
