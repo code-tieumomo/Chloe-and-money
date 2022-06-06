@@ -1,8 +1,9 @@
 require("./bootstrap");
 
-import { createApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/inertia-vue3";
-import { InertiaProgress } from "@inertiajs/progress";
+import {createApp, h} from "vue";
+import {createInertiaApp} from "@inertiajs/inertia-vue3";
+import {InertiaProgress} from "@inertiajs/progress";
+import "flowbite";
 
 const mq = window.matchMedia("(max-width: 768px)");
 if (mq.matches) {
@@ -11,10 +12,10 @@ if (mq.matches) {
     createInertiaApp({
         title: (title) => `${title} - cờ lâu i and money`,
         resolve: (name) => require(`./Pages/${name}.vue`),
-        setup({ el, app, props, plugin }) {
-            return createApp({ render: () => h(app, props) })
+        setup({el, app, props, plugin}) {
+            return createApp({render: () => h(app, props)})
                 .use(plugin)
-                .mixin({ methods: { route } })
+                .mixin({methods: {route}})
                 .mount(el);
         },
     }).then(r => console.log(
@@ -24,7 +25,7 @@ if (mq.matches) {
         "background:transparent",
     ));
 
-    InertiaProgress.init({ color: "#4dcfe0" });
+    InertiaProgress.init({color: "#4dcfe0"});
 } else {
     alert("Not support large screen!");
 }

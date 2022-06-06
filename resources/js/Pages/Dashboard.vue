@@ -2,14 +2,13 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import {Head, Link} from "@inertiajs/inertia-vue3";
 import Popper from "vue3-popper";
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
 import VueApexCharts from "vue3-apexcharts";
 
 const props = defineProps({
     wallets: Array,
     totalAmount: Number,
 });
-console.log(props.totalAmount);
 
 const isShowWallet = ref(false);
 
@@ -58,6 +57,29 @@ const chart = {
         },
     },
 };
+
+onMounted(() => {
+    const tabElements = [
+        {
+            id: "week",
+            triggerEl: document.querySelector("#week-tab"),
+            targetEl: document.querySelector("#week"),
+        },
+        {
+            id: "month",
+            triggerEl: document.querySelector("#month-tab"),
+            targetEl: document.querySelector("#month"),
+        },
+    ];
+
+    const options = {
+        defaultTabId: "week",
+        activeClasses: "bg-white rounded",
+        inactiveClasses: "text-gray-500",
+    };
+
+    const tabs = new Tabs(tabElements, options);
+});
 </script>
 
 <template>
@@ -146,7 +168,38 @@ const chart = {
         <div class="mt-4">
             <span class="text-xs text-gray-500 mx-2">Spending report</span>
             <div class="mx-2 bg-white shadow rounded-md p-2">
-                <VueApexCharts type="polarArea" :options="chart.chartOptions" :series="chart.series"></VueApexCharts>
+                <ul class="flex text-sm font-medium text-center w-fit mx-auto p-0.5 bg-gray-100 rounded-md" id="sp" data-tabs-toggle="#spContent" role="tablist">
+                    <li class="" role="presentation">
+                        <button class="inline-block text-xs py-1 px-4" id="week-tab" data-tabs-target="#week" type="button" role="tab"
+                                aria-controls="week"
+                                aria-selected="false">
+                            Week
+                        </button>
+                    </li>
+                    <li class="" role="presentation">
+                        <button class="inline-block text-xs py-1 px-4" id="month-tab" data-tabs-target="#month" type="button" role="tab"
+                                aria-controls="month"
+                                aria-selected="false">
+                            Month
+                        </button>
+                    </li>
+                </ul>
+                <div id="spContent">
+                    <div class="hidden p-4 rounded-lg" id="week" role="tabpanel" aria-labelledby="week-tab">
+                        <div class="flex flex-col">
+                            <span class="font-semibold">91,000</span>
+                            <span class="text-xs text-gray-500">Total spent this week</span>
+                        </div>
+                        <VueApexCharts type="polarArea" :options="chart.chartOptions" :series="chart.series"></VueApexCharts>
+                    </div>
+                    <div class="hidden p-4 rounded-lg" id="month" role="tabpanel" aria-labelledby="month-tab">
+                        <div class="flex flex-col">
+                            <span class="font-semibold">91,000</span>
+                            <span class="text-xs text-gray-500">Total spent this week</span>
+                        </div>
+                        <VueApexCharts type="polarArea" :options="chart.chartOptions" :series="chart.series"></VueApexCharts>
+                    </div>
+                </div>
             </div>
         </div>
     </BreezeAuthenticatedLayout>

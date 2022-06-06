@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "apexcharts": "^3.35.3",
+        "flowbite": "^1.4.7",
         "moment": "^2.29.3",
         "vue3-apexcharts": "^1.4.1",
         "vue3-perfect-scrollbar": "^1.6.0",

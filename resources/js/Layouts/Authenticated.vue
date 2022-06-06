@@ -232,7 +232,7 @@ const groups = usePage().props.value.groups;
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="pb-[70px]">
                 <slot/>
             </main>
 
