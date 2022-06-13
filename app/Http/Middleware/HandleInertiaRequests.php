@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\Models\Group;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -43,8 +45,11 @@ class HandleInertiaRequests extends Middleware
             'subGroups' => $group->subGroups->map(fn($subGroup) => [
                 'id' => $subGroup->id,
                 'name' => $subGroup->name,
+                'type' => $subGroup->transaction_type,
             ]),
         ]);
+
+        $wallets = $request->user() ? Wallet::where('user_id', Auth::user()->id)->get() : null;
 
         return array_merge(parent::share($request), [
             'auth' => [
@@ -58,6 +63,10 @@ class HandleInertiaRequests extends Middleware
                 return (new Ziggy)->toArray();
             },
             'groups' => $groups,
+            'wallets' => $wallets,
+            'flash' => [
+                'success' => fn() => $request->session()->get('success'),
+            ],
         ]);
     }
 }

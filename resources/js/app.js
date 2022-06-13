@@ -4,6 +4,8 @@ import {createApp, h} from "vue";
 import {createInertiaApp} from "@inertiajs/inertia-vue3";
 import {InertiaProgress} from "@inertiajs/progress";
 import "flowbite";
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 const mq = window.matchMedia("(max-width: 768px)");
 if (mq.matches) {
@@ -15,6 +17,7 @@ if (mq.matches) {
         setup({el, app, props, plugin}) {
             return createApp({render: () => h(app, props)})
                 .use(plugin)
+                .use(VueSweetalert2)
                 .mixin({methods: {route}})
                 .mount(el);
         },

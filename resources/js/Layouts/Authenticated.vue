@@ -1,5 +1,5 @@
 <script setup>
-import {nextTick, onMounted, reactive, ref} from "vue";
+import {inject, nextTick, onMounted, reactive, ref} from "vue";
 import BreezeApplicationLogo from "@/Components/Logo.vue";
 import BreezeDropdown from "@/Components/Dropdown.vue";
 import BreezeDropdownLink from "@/Components/DropdownLink.vue";
@@ -8,7 +8,13 @@ import BreezeResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import {Link, useForm, usePage} from "@inertiajs/inertia-vue3";
 import moment from "moment";
 
+const swal = inject("$swal");
+
 const showingNavigationDropdown = ref(false);
+
+function quit() {
+    window.close();
+}
 
 /**
  * Transaction modal
@@ -17,6 +23,20 @@ const input = ref(null);
 const modal = reactive({
     isOpen: false,
 });
+const inputClass = ref("border-red-300 text-red-500 focus:ring-red-500 focus:border-red-500");
+
+function changeSubGroup(e) {
+    const type = e.target.querySelector(":checked").dataset.type;
+    switch (type) {
+        case "Outflow":
+            inputClass.value = "border-red-300 text-red-500 focus:ring-red-500 focus:border-red-500";
+            break;
+
+        case "Inflow":
+            inputClass.value = "border-green-300 text-green-500 focus:ring-green-500 focus:border-green-500";
+            break;
+    }
+}
 
 onMounted(() => {
     document.addEventListener("keydown", function (e) {
@@ -30,30 +50,39 @@ async function toggleModal() {
     if (modal.isOpen) input.value.focus();
 }
 
+const groups = usePage().props.value.groups;
+const wallets = usePage().props.value.wallets;
+
 const form = useForm({
     amount: "",
     type: "spending",
-    group_id: 1,
+    sub_group_id: 1,
+    wallet_id: wallets.at(0).id,
     description: "",
     date: moment(new Date()).format("yyyy-MM-DD"),
 });
 
 function formatAmount() {
-    let nf = new Intl.NumberFormat("en-US");
-    form.amount = nf.format(Number(form.amount.replaceAll(",", "")));
+    form.amount = form.amount.replaceAll(",", "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function storeTransaction() {
-    // form.transform((data) => ({
-    //     ...data,
-    //     rawAmount: Number(data.amount.replaceAll(",", "")),
-    // })).post("/transaction", {
-    //     preserveScroll: true,
-    //     onSuccess: () => form.reset("amount") && form.reset("description"),
-    // });
+    form.transform((data) => ({
+        ...data,
+        rawAmount: Number(data.amount.replaceAll(",", "")),
+    })).post("/transaction", {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset("amount") && form.reset("description");
+            swal({
+                icon: "success",
+                title: "Success",
+                text: usePage().props.value.flash.success,
+            });
+        },
+    });
 }
 
-const groups = usePage().props.value.groups;
 </script>
 
 <template>
@@ -220,6 +249,16 @@ const groups = usePage().props.value.groups;
                                 Log Out
                             </BreezeResponsiveNavLink>
                         </div>
+                        <div class="space-y-1">
+                            <BreezeResponsiveNavLink
+                                class="w-full text-left"
+                                href="#"
+                                as="button"
+                                @click.prevent="quit"
+                            >
+                                Quit
+                            </BreezeResponsiveNavLink>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -275,153 +314,151 @@ const groups = usePage().props.value.groups;
                         </svg>
                     </Link>
                 </nav>
+            </div>
 
-                <!-- Main modal -->
-                <Transition>
-                    <div v-if="modal.isOpen"
-                         id="authentication-modal"
-                         aria-hidden="true"
-                         class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full h-full md:inset-0 h-modal md:h-full bg-black/[.6]"
-                         tabindex="-1"
-                         @click="toggleModal"
-                         @keydown.esc="toggleModal"
+            <!-- Main modal -->
+            <Transition>
+                <div v-if="modal.isOpen"
+                     id="authentication-modal"
+                     aria-hidden="true"
+                     class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-screen min-h-screen md:inset-0 h-modal md:h-full bg-white"
+                     tabindex="-1"
+                     @click="toggleModal"
+                     @keydown.esc="toggleModal"
+                >
+                    <!-- Modal content -->
+                    <div
+                        class="relative w-full h-full"
+                        @click.stop
                     >
-                        <div class="relative w-full h-full flex justify-center items-center">
-                            <!-- Modal content -->
-                            <div
-                                class="relative bg-white w-full h-full"
-                                @click.stop
+                        <button
+                            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                            data-modal-toggle="authentication-modal"
+                            type="button"
+                            @click="toggleModal"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
                             >
-                                <button
-                                    class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                                    data-modal-toggle="authentication-modal"
-                                    type="button"
-                                    @click="toggleModal"
-                                >
-                                    <svg
-                                        class="w-5 h-5"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                <path
+                                    clip-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    fill-rule="evenodd"
+                                ></path>
+                            </svg>
+                        </button>
+                        <div class="py-6 px-6 lg:px-8">
+                            <h3
+                                class="mb-4 text-xl font-medium text-gray-900"
+                            >
+                                Add new transaction
+                            </h3>
+                            <form
+                                class="space-y-6"
+                                @submit.prevent="storeTransaction"
+                            >
+                                <div>
+                                    <label
+                                        class="block mb-2 text-sm font-medium text-gray-900"
+                                        for="amount"
+                                    >Amount</label
                                     >
-                                        <path
-                                            clip-rule="evenodd"
-                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                            fill-rule="evenodd"
-                                        ></path>
-                                    </svg>
-                                </button>
-                                <div class="py-6 px-6 lg:px-8">
-                                    <h3
-                                        class="mb-4 text-xl font-medium text-gray-900"
-                                    >
-                                        Add new transaction
-                                    </h3>
-                                    <form
-                                        class="space-y-6"
-                                        @submit.prevent="storeTransaction"
-                                    >
-                                        <div>
-                                            <label
-                                                class="block mb-2 text-sm font-medium text-gray-900"
-                                                for="amount"
-                                            >Amount</label
-                                            >
-                                            <input
-                                                id="amount"
-                                                ref="input"
-                                                v-model="form.amount"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                                min="0"
-                                                name="amount"
-                                                placeholder="Amount"
-                                                required
-                                                type="text"
-                                                @input="formatAmount"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block mb-2 text-sm font-medium text-gray-900"
-                                                for="type"
-                                            >Transaction type</label
-                                            >
-                                            <select
-                                                id="type"
-                                                v-model="form.type"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                            >
-                                                <option selected value="spending">
-                                                    Spending money
-                                                </option>
-                                                <option value="saving">
-                                                    Saving money
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div v-if="form.type === 'spending'">
-                                            <label class="block mb-2 text-sm font-medium text-gray-900"
-                                                   for="group">Group</label>
-                                            <select
-                                                id="group"
-                                                v-model="form.group_id"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                            >
-                                                <optgroup v-for="group in groups" :key="group.id" :label="group.name">
-                                                    <option v-for="subGroup in group.subGroups" :key="subGroup.id" :value="subGroup.id">
-                                                        {{ subGroup.name }}
-                                                    </option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                        <div v-if="form.type === 'spending'">
-                                            <label
-                                                class="block mb-2 text-sm font-medium text-gray-900"
-                                                for="description"
-                                            >Description</label
-                                            >
-                                            <textarea
-                                                id="description"
-                                                v-model="form.description"
-                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                                placeholder="Description"
-                                                rows="4"
-                                            ></textarea>
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block mb-2 text-sm font-medium text-gray-900"
-                                                for="description"
-                                            >Date</label
-                                            >
-                                            <input
-                                                id="date"
-                                                type="date"
-                                                v-model="form.date"
-                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                                placeholder="Description"
-                                            >
-                                        </div>
-                                        <button
-                                            :disabled="form.processing"
-                                            class="w-full text-white bg-cyan-400 hover:bg-cyan-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                            type="submit"
-                                        >
-                                            Submit
-                                        </button>
-                                    </form>
+                                    <input
+                                        id="amount"
+                                        ref="input"
+                                        v-model="form.amount"
+                                        class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
+                                        :class="inputClass"
+                                        min="0"
+                                        name="amount"
+                                        placeholder="Amount"
+                                        required
+                                        type="text"
+                                        @input="formatAmount"
+                                    />
                                 </div>
-                            </div>
+                                <div v-if="form.type === 'spending'">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900"
+                                           for="wallet">Wallet</label>
+                                    <select
+                                        id="wallet"
+                                        name="wallet_id"
+                                        v-model="form.wallet_id"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    >
+                                        <option v-for="wallet in wallets" :key="wallet.id" :value="wallet.id">
+                                            {{ wallet.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div v-if="form.type === 'spending'">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900"
+                                           for="group">Group</label>
+                                    <select
+                                        id="group"
+                                        v-model="form.sub_group_id"
+                                        name="group_id"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                        @change="changeSubGroup"
+                                    >
+                                        <optgroup v-for="group in groups" :key="group.id" :label="group.name">
+                                            <option v-for="subGroup in group.subGroups" :key="subGroup.id" :value="subGroup.id" :data-type="subGroup.type">
+                                                {{ subGroup.name }}
+                                            </option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div v-if="form.type === 'spending'">
+                                    <label
+                                        class="block mb-2 text-sm font-medium text-gray-900"
+                                        for="description"
+                                    >Description</label
+                                    >
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        v-model="form.description"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Description"
+                                        rows="4"
+                                    ></textarea>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block mb-2 text-sm font-medium text-gray-900"
+                                        for="description"
+                                    >
+                                        Date
+                                    </label>
+                                    <input
+                                        id="date"
+                                        type="date"
+                                        name="date"
+                                        v-model="form.date"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Description"
+                                    >
+                                </div>
+                                <button
+                                    :disabled="form.processing"
+                                    class="w-full text-white bg-cyan-400 hover:bg-cyan-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                    type="submit"
+                                >
+                                    Submit
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </Transition>
-            </div>
+                </div>
+            </Transition>
         </div>
     </div>
 </template>
 
 <style scoped>
-/* we will explain what these classes do next! */
 .v-enter-active,
 .v-leave-active {
     transition: opacity 0.2s ease, transform 0.2s ease;

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +29,13 @@ Route::get('/', function() {
     ]);
 })->name('home');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::post('/transaction', [TransactionController::class, 'store'])->middleware(['auth', 'verified'])->name('transaction.store');
+Route::middleware(['auth'])->group(function() {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/transaction', [TransactionController::class, 'store'])->name('transaction.store');
+
+    Route::get('/wallets', [WalletController::class, 'index'])->name('wallets.index');
+    Route::get('/wallets/{id}', [WalletController::class, 'show'])->name('wallets.show');
+    Route::put('/wallets/{id}', [WalletController::class, 'update'])->name('wallets.update');
+});
 
 require __DIR__ . '/auth.php';

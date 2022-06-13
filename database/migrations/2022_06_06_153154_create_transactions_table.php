@@ -12,14 +12,18 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('spending_money', function(Blueprint $table) {
+        Schema::create('transactions', function(Blueprint $table) {
             $table->id();
-            $table->bigInteger('amount');
             $table->unsignedBigInteger('user_id');
-            $table->text('description')->nullable();
+            $table->bigInteger('amount');
+            $table->unsignedBigInteger('sub_group_id');
+            $table->date('date');
+            $table->unsignedBigInteger('wallet_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('sub_group_id')->references('id')->on('sub_groups');
+            $table->foreign('wallet_id')->references('id')->on('wallets');
         });
     }
 
@@ -30,6 +34,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('spending_money');
+        Schema::dropIfExists('transactions');
     }
 };

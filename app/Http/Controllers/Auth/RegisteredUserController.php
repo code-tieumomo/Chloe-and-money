@@ -54,6 +54,12 @@ class RegisteredUserController extends Controller
             'currency' => 'VND',
             'amount' => 0,
         ]);
+        Wallet::create([
+            'user_id' => $user->id,
+            'name' => 'Your bank wallet',
+            'currency' => 'VND',
+            'amount' => 0,
+        ]);
 
         event(new Registered($user));
 

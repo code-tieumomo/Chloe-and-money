@@ -24,6 +24,12 @@ class DatabaseSeeder extends Seeder
                 'currency' => 'VND',
                 'amount' => 0,
             ]);
+            Wallet::create([
+                'user_id' => $user->id,
+                'name' => 'Your bank wallet',
+                'currency' => 'VND',
+                'amount' => 0,
+            ]);
         }
 
         $this->call(GroupSeeder::class);

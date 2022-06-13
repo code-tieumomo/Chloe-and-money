@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('slug');
             $table->string('description')->nullable();
+            $table->string('transaction_type');
             $table->unsignedBigInteger('group_id');
             $table->timestamps();
 
